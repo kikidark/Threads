@@ -1,27 +1,24 @@
 #include <iostream>
-#include <pthread.h>
 #include <ctime>
 #include <ratio>
 #include <chrono>
 
 using namespace std::chrono;
 
-#define NUM_THREADS 5
+#define NUM_THREADS 2
 
-void * PrintHelloWorld(void *threadis){
-    long tid;
-    tid=(long)threadis;
-    std::cout<<"Hello World Thread ID\n"<<tid<<std::endl;
-    pthread_exit(NULL);
+void PrintHelloWorld(){
+    long tid=NUM_THREADS;
+    
+    std::cout<<"Hello World Thread ID\n"<<tid;
 }
 
 int main() {
-    pthread_t threads[NUM_THREADS];
     int rc, i;
     for(int i=0; i<NUM_THREADS;i++){
   high_resolution_clock::time_point t1 = high_resolution_clock::now();
-       std::cout<<"main(): creating thread, "<<i<< std::endl;
-        rc= pthread_create(&threads[i], NULL, PrintHelloWorld,(void*)i);
+       std::cout<<"main(): creating thread, ";
+   PrintHelloWorld();
   high_resolution_clock::time_point t2 = high_resolution_clock::now();
   duration<double> time_span = duration_cast<duration<double>>(t2 - t1);
         std::cout <<"tomo " <<time_span.count() <<" Segundos\n";
@@ -32,5 +29,4 @@ int main() {
         
         //cout<<"Hello World\n";
     }
-    pthread_exit(NULL);
 }
