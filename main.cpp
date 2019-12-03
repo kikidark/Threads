@@ -1,14 +1,17 @@
 #include <iostream>
 #include <pthread.h>
+#include <ctime>
+#include <ratio>
+#include <chrono>
 
-using namespace std;
+using namespace std::chrono;
 
 #define NUM_THREADS 5
 
 void * PrintHelloWorld(void *threadis){
     long tid;
     tid=(long)threadis;
-    cout<<"Hello World Thread ID"<<tid<<endl;
+    std::cout<<"Hello World Thread ID\n"<<tid<<std::endl;
     pthread_exit(NULL);
 }
 
@@ -16,11 +19,14 @@ int main() {
     pthread_t threads[NUM_THREADS];
     int rc, i;
     for(int i=0; i<NUM_THREADS;i++){
-        cout<<"main(): creating thread, "<<i<< endl;
+  high_resolution_clock::time_point t1 = high_resolution_clock::now();
+       std::cout<<"main(): creating thread, "<<i<< std::endl;
         rc= pthread_create(&threads[i], NULL, PrintHelloWorld,(void*)i);
-
+  high_resolution_clock::time_point t2 = high_resolution_clock::now();
+  duration<double> time_span = duration_cast<duration<double>>(t2 - t1);
+        std::cout <<"tomo " <<time_span.count() <<" Segundos\n";
         if(rc){
-            cout<<"Error:unable to create thread, "<<i<<endl;
+            std::cout<<"Error:unable to create thread, "<<i<<std::endl;
             exit(-1);
         }
         
